@@ -23,6 +23,8 @@ const QuestList: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const totalPages = Math.ceil(quests.length / ITEMS_PER_PAGE);
 
+  console.log("QUESTS", quests);
+
   // Load quests from Firestore
   useEffect(() => {
     const fetchQuests = async () => {

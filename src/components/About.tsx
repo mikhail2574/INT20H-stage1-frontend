@@ -16,8 +16,11 @@ const About = () => {
   };
 
   return (
-    <section className={`relative w-full h-screen mx-auto bg-black z-0`}>
-      <div className="flex flex-row items-start gap-35 w-full top-[200px] absolute">
+    <section
+      className={`w-full mx-auto bg-black z-0`}
+      style={{ height: "100vh", paddingTop: 100, minHeight: 620 }}
+    >
+      <div className="flex flex-row items-center gap-35 w-full top-[200px]">
         <div className="w-1/2">
           <p
             className="text-white lg:text-[46px] sm:text-[40px] xs:text-[36px] text-[30px] lg:leading-[46px]"

@@ -4,9 +4,9 @@ interface QuestCardProps {
   image?: string;
   title?: string;
   rating?: number;
-  taskImage?: string;
+  imageUrl?: string;
   tasks?: number;
-  time?: number;
+  duration?: number;
   players?: number;
   author?: string;
   authorAvatar?: string;
@@ -16,9 +16,9 @@ const QuestCard: React.FC<QuestCardProps> = ({
   image,
   title,
   rating,
-  taskImage,
+  imageUrl,
   tasks,
-  time,
+  duration,
   players,
   author,
   authorAvatar,
@@ -133,9 +133,9 @@ const QuestCard: React.FC<QuestCardProps> = ({
         }`}
         style={{ marginLeft: "6px", marginTop: "2px" }}
       >
-        <img src={taskImage} className="w-6 h-6 mr-2" />
+        <img src={imageUrl} className="w-6 h-6 mr-2" />
         <span>
-          {tasks} · {time} хвилин
+          {tasks} · {duration} хвилин
         </span>
       </div>
 
