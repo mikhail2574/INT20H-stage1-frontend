@@ -1,13 +1,18 @@
-import { createContext, useContext, useEffect, useState } from 'react'
-import { auth } from '../lib/firebase'
-import { User } from 'firebase/auth'
+import { createContext, useContext, useEffect, useState } from "react";
+import { auth } from "../lib/firebase";
+import { User } from "firebase/auth";
 
 type UserContextType = {
   user: User | null;
   loading: boolean;
-}
+  setUser: (user: User | null) => void;
+};
 
-const UserContext = createContext<UserContextType>({ user: null, loading: true });
+const UserContext = createContext<UserContextType>({
+  user: null,
+  loading: true,
+  setUser: () => {},
+});
 
 export function UserProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -23,7 +28,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, loading }}>
+    <UserContext.Provider value={{ user, loading, setUser }}>
       {!loading && children}
     </UserContext.Provider>
   );

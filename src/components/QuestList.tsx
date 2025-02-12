@@ -1,166 +1,117 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import QuestCard from "./QuestCard";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-
-const quests = [
-      { image: "src/assets/grey.png", title: "Який ти овоч?", rating: 4.3, taskImage: "src/assets/tasks.png", tasks: 12, time: 60, players: 18, author: "Turboyarik", authorAvatar: "/images/turbomisha-avatar.png" },
-      { image: "src/assets/grey.png", title: "Який ти овоч?", rating: 4.3, taskImage: "src/assets/tasks.png", tasks: 12, time: 60, players: 18, author: "Turboyarik", authorAvatar: "/images/turbomisha-avatar.png" },
-      { image: "src/assets/grey.png", title: "Який ти овоч?", rating: 4.3, taskImage: "src/assets/tasks.png", tasks: 12, time: 60, players: 18, author: "Turboyarik", authorAvatar: "/images/turbomisha-avatar.png" },
-      { image: "src/assets/grey.png", title: "Який ти овоч?", rating: 4.3, taskImage: "src/assets/tasks.png", tasks: 12, time: 60, players: 18, author: "Turboyarik", authorAvatar: "/images/turbomisha-avatar.png" },
-      { image: "src/assets/grey.png", title: "Який ти овоч?", rating: 4.3, taskImage: "src/assets/tasks.png", tasks: 12, time: 60, players: 18, author: "Turboyarik", authorAvatar: "/images/turbomisha-avatar.png" },
-      { image: "src/assets/grey.png", title: "Який ти овоч?", rating: 4.3, taskImage: "src/assets/tasks.png", tasks: 12, time: 60, players: 18, author: "Turboyarik", authorAvatar: "/images/turbomisha-avatar.png" },
-      { image: "src/assets/grey.png", title: "Який ти овоч?", rating: 4.3, taskImage: "src/assets/tasks.png", tasks: 12, time: 60, players: 18, author: "Turboyarik", authorAvatar: "/images/turbomisha-avatar.png" },
-      { image: "src/assets/grey.png", title: "Який ти овоч?", rating: 4.3, taskImage: "src/assets/tasks.png", tasks: 12, time: 60, players: 18, author: "Turboyarik", authorAvatar: "/images/turbomisha-avatar.png" },
-      { image: "src/assets/grey.png", title: "Який ти овоч?", rating: 4.3, taskImage: "src/assets/tasks.png", tasks: 12, time: 60, players: 18, author: "Turboyarik", authorAvatar: "/images/turbomisha-avatar.png" },
-      { image: "src/assets/grey.png", title: "Який ти овоч?", rating: 4.3, taskImage: "src/assets/tasks.png", tasks: 12, time: 60, players: 18, author: "Turboyarik", authorAvatar: "/images/turbomisha-avatar.png" },
-      { image: "src/assets/grey.png", title: "Який ти овоч?", rating: 4.3, taskImage: "src/assets/tasks.png", tasks: 12, time: 60, players: 18, author: "Turboyarik", authorAvatar: "/images/turbomisha-avatar.png" },
-      { image: "src/assets/grey.png", title: "Який ти овоч?", rating: 4.3, taskImage: "src/assets/tasks.png", tasks: 12, time: 60, players: 18, author: "Turboyarik", authorAvatar: "/images/turbomisha-avatar.png" },
-      { image: "src/assets/grey.png", title: "Який ти овоч?", rating: 4.3, taskImage: "src/assets/tasks.png", tasks: 12, time: 60, players: 18, author: "Turboyarik", authorAvatar: "/images/turbomisha-avatar.png" },
-      { image: "src/assets/grey.png", title: "Який ти овоч?", rating: 4.3, taskImage: "src/assets/tasks.png", tasks: 12, time: 60, players: 18, author: "Turboyarik", authorAvatar: "/images/turbomisha-avatar.png" },
-      { image: "src/assets/grey.png", title: "Який ти овоч?", rating: 4.3, taskImage: "src/assets/tasks.png", tasks: 12, time: 60, players: 18, author: "Turboyarik", authorAvatar: "/images/turbomisha-avatar.png" },
-      { image: "src/assets/grey.png", title: "Який ти овоч?", rating: 4.3, taskImage: "src/assets/tasks.png", tasks: 12, time: 60, players: 18, author: "Turboyarik", authorAvatar: "/images/turbomisha-avatar.png" },
-      { image: "src/assets/grey.png", title: "Який ти овоч?", rating: 4.3, taskImage: "src/assets/tasks.png", tasks: 12, time: 60, players: 18, author: "Turboyarik", authorAvatar: "/images/turbomisha-avatar.png" },
-      { image: "src/assets/grey.png", title: "Який ти овоч?", rating: 4.3, taskImage: "src/assets/tasks.png", tasks: 12, time: 60, players: 18, author: "Turboyarik", authorAvatar: "/images/turbomisha-avatar.png" },
-      { image: "src/assets/grey.png", title: "Який ти овоч?", rating: 4.3, taskImage: "src/assets/tasks.png", tasks: 12, time: 60, players: 18, author: "Turboyarik", authorAvatar: "/images/turbomisha-avatar.png" },
-      { image: "src/assets/grey.png", title: "Який ти овоч?", rating: 4.3, taskImage: "src/assets/tasks.png", tasks: 12, time: 60, players: 18, author: "Turboyarik", authorAvatar: "/images/turbomisha-avatar.png" },
-      { image: "src/assets/grey.png", title: "Який ти овоч?", rating: 4.3, taskImage: "src/assets/tasks.png", tasks: 12, time: 60, players: 18, author: "Turboyarik", authorAvatar: "/images/turbomisha-avatar.png" },
-      { image: "src/assets/grey.png", title: "Який ти овоч?", rating: 4.3, taskImage: "src/assets/tasks.png", tasks: 12, time: 60, players: 18, author: "Turboyarik", authorAvatar: "/images/turbomisha-avatar.png" },
-      { image: "src/assets/grey.png", title: "Який ти овоч?", rating: 4.3, taskImage: "src/assets/tasks.png", tasks: 12, time: 60, players: 18, author: "Turboyarik", authorAvatar: "/images/turbomisha-avatar.png" },
-      { image: "src/assets/grey.png", title: "Який ти овоч?", rating: 4.3, taskImage: "src/assets/tasks.png", tasks: 12, time: 60, players: 18, author: "Turboyarik", authorAvatar: "/images/turbomisha-avatar.png" },
-      { image: "src/assets/grey.png", title: "Який ти овоч?", rating: 4.3, taskImage: "src/assets/tasks.png", tasks: 12, time: 60, players: 18, author: "Turboyarik", authorAvatar: "/images/turbomisha-avatar.png" },
-      { image: "src/assets/grey.png", title: "Який ти овоч?", rating: 4.3, taskImage: "src/assets/tasks.png", tasks: 12, time: 60, players: 18, author: "Turboyarik", authorAvatar: "/images/turbomisha-avatar.png" },
-      { image: "src/assets/grey.png", title: "Який ти овоч?", rating: 4.3, taskImage: "src/assets/tasks.png", tasks: 12, time: 60, players: 18, author: "Turboyarik", authorAvatar: "/images/turbomisha-avatar.png" },
-      { image: "src/assets/grey.png", title: "Який ти овоч?", rating: 4.3, taskImage: "src/assets/tasks.png", tasks: 12, time: 60, players: 18, author: "Turboyarik", authorAvatar: "/images/turbomisha-avatar.png" },
-      { image: "src/assets/grey.png", title: "Який ти овоч?", rating: 4.3, taskImage: "src/assets/tasks.png", tasks: 12, time: 60, players: 18, author: "Turboyarik", authorAvatar: "/images/turbomisha-avatar.png" },
-      { image: "src/assets/grey.png", title: "Який ти овоч?", rating: 4.3, taskImage: "src/assets/tasks.png", tasks: 12, time: 60, players: 18, author: "Turboyarik", authorAvatar: "/images/turbomisha-avatar.png" },
-      { image: "src/assets/grey.png", title: "Який ти овоч?", rating: 4.3, taskImage: "src/assets/tasks.png", tasks: 12, time: 60, players: 18, author: "Turboyarik", authorAvatar: "/images/turbomisha-avatar.png" },
-      { image: "src/assets/grey.png", title: "Який ти овоч?", rating: 4.3, taskImage: "src/assets/tasks.png", tasks: 12, time: 60, players: 18, author: "Turboyarik", authorAvatar: "/images/turbomisha-avatar.png" },
-      { image: "src/assets/grey.png", title: "Який ти овоч?", rating: 4.3, taskImage: "src/assets/tasks.png", tasks: 12, time: 60, players: 18, author: "Turboyarik", authorAvatar: "/images/turbomisha-avatar.png" },
-      { image: "src/assets/grey.png", title: "Який ти овоч?", rating: 4.3, taskImage: "src/assets/tasks.png", tasks: 12, time: 60, players: 18, author: "Turboyarik", authorAvatar: "/images/turbomisha-avatar.png" },
-
-];
+import { db } from "../lib/firebase";
+import { collection, getDocs } from "firebase/firestore";
 
 const ITEMS_PER_PAGE = 16;
 
+interface Quest {
+  id: string;
+  title: string;
+  description: string;
+  duration: string;
+  questType: string;
+  imageUrl: string;
+  createdBy: string;
+  createdAt: any; // Firestore timestamp
+}
+
 const QuestList: React.FC = () => {
-    const [currentPage, setCurrentPage] = useState(1);
-    const totalPages = Math.ceil(quests.length / ITEMS_PER_PAGE);
+  const [quests, setQuests] = useState<Quest[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true);
+  const totalPages = Math.ceil(quests.length / ITEMS_PER_PAGE);
 
-    const paginatedQuests = quests.slice(
-        (currentPage - 1) * ITEMS_PER_PAGE,
-        currentPage * ITEMS_PER_PAGE
-    );
-
-    const [isHoveredPrev, setIsHoveredPrev] = useState(false);
-    const [isHoveredNext, setIsHoveredNext] = useState(false);
-    const [isHoveredPage, setIsHoveredPage] = useState<number | null>(null);
-
-    const goToPage = (page: number) => {
-        if (page >= 1 && page <= totalPages) {
-        setCurrentPage(page);
-        }
+  // Load quests from Firestore
+  useEffect(() => {
+    const fetchQuests = async () => {
+      setLoading(true);
+      try {
+        const querySnapshot = await getDocs(collection(db, "quests"));
+        const questsData = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        })) as Quest[];
+        setQuests(questsData);
+      } catch (error) {
+        console.error("Помилка завантаження квестів:", error);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    const buttonStyle = {
-        padding: "0.5rem",
-        borderRadius: "50%",
-        backgroundColor: "transparent",
-        color: "#2F6ADC",
-        border: "none",
-        width: "40px",
-        height: "40px",
-    };
+    fetchQuests();
+  }, []);
 
-    const hoverStyle = {
-        backgroundColor: "#2F6ADC",
-        color: "#ffffff",
-        cursor: "pointer",
-    };
+  const paginatedQuests = quests.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
 
-    const activeStyle = {
-        backgroundImage: "linear-gradient(45deg, #2F6ADC, #B163FF)",
-        animation: "move 4s ease infinite",
-        backgroundSize: "300% 300%",
-        color: "#fff",
-    };
+  const goToPage = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
 
-    const keyframes = `
-        @keyframes move {
-        0% {
-            background-position: 0 0;
-        }
-        25% {
-            background-position: 100% 0;
-        }
-        50% {
-            background-position: 100% 100%;
-        }
-        75% {
-            background-position: 0 100%;
-        }
-        100% {
-            background-position: 0 0;
-        }
-    `;
+  return (
+    <div className="flex flex-col items-center bg-black">
+      {loading ? (
+        <p className="text-white text-xl">Завантаження...</p>
+      ) : quests.length === 0 ? (
+        <p className="text-white text-xl">Поки що немає квестів</p>
+      ) : (
+        <>
+          <div className="grid gap-10 grid-cols-4">
+            {paginatedQuests.map((quest) => (
+              <QuestCard key={quest.id} {...quest} />
+            ))}
+          </div>
 
-    return (
-        <div className="flex flex-col items-center bg-black">
-        
-            <div className="grid gap-10 grid-cols-4">
-                {paginatedQuests.map((quest, index) => (
-                    <QuestCard key={index} {...quest} />
-                ))}
+          {totalPages > 1 && (
+            <div className="flex gap-4 items-center text-white mt-6">
+              <button
+                onClick={() => goToPage(currentPage - 1)}
+                disabled={currentPage === 1}
+                className={`p-2 rounded-full ${
+                  currentPage === 1 ? "opacity-50" : "hover:bg-blue-600"
+                }`}
+              >
+                <ChevronLeft size={20} />
+              </button>
+
+              {[...Array(totalPages)].map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => goToPage(i + 1)}
+                  className={`p-2 rounded-full ${
+                    currentPage === i + 1
+                      ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white"
+                      : "hover:bg-blue-600"
+                  }`}
+                >
+                  {i + 1}
+                </button>
+              ))}
+
+              <button
+                onClick={() => goToPage(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className={`p-2 rounded-full ${
+                  currentPage === totalPages
+                    ? "opacity-50"
+                    : "hover:bg-blue-600"
+                }`}
+              >
+                <ChevronRight size={20} />
+              </button>
             </div>
-    
-            {totalPages > 1 && (
-                <div className="flex gap-4 items-center text-white" style={{marginTop: "24px", marginBottom: "24px"}}>
-                    <button
-                        onClick={() => goToPage(currentPage - 1)}
-                        disabled={currentPage === 1}
-                        style={{
-                            ...buttonStyle,
-                            opacity: currentPage === 1 ? 0.5 : 1,
-                            ...(isHoveredPrev ? hoverStyle : {}),
-                        }}
-                        onMouseEnter={() => setIsHoveredPrev(true)}
-                        onMouseLeave={() => setIsHoveredPrev(false)}
-                    >
-                        <ChevronLeft size={20} />
-                    </button>
-        
-                    {[...Array(totalPages)].map((_, i) => (
-                        <button
-                        key={i}
-                        onClick={() => goToPage(i + 1)}
-                        style={{
-                            ...buttonStyle,
-                            ...(currentPage === i + 1 ? activeStyle : {}),
-                            ...(isHoveredPage === i ? hoverStyle : {}),
-                        }}
-                        onMouseEnter={() => setIsHoveredPage(i)}
-                        onMouseLeave={() => setIsHoveredPage(null)}
-                        >
-                        {i + 1}
-                        </button>
-                    ))}
-            
-                    <button
-                        onClick={() => goToPage(currentPage + 1)}
-                        disabled={currentPage === totalPages}
-                        style={{
-                        ...buttonStyle,
-                        opacity: currentPage === totalPages ? 0.5 : 1,
-                        ...(isHoveredNext ? hoverStyle : {}),
-                        }}
-                        onMouseEnter={() => setIsHoveredNext(true)}
-                        onMouseLeave={() => setIsHoveredNext(false)}
-                    >
-                        <ChevronRight size={20} />
-                    </button>
-                </div>
-            )}
-        </div>
-    );
+          )}
+        </>
+      )}
+    </div>
+  );
 };
 
 export default QuestList;

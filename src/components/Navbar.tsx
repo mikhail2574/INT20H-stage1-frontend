@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import {
   signInWithPopup,
   signOut,
@@ -7,11 +7,12 @@ import {
   createUserWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
-import { auth } from "../lib/firebase";
+import { auth, storage } from "../lib/firebase";
 import { useUser } from "../context/UserContext";
 import logo from "../assets/logo.png";
 import userIcon from "../assets/user_icon.png";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { Dialog, Transition } from "@headlessui/react";
 
 const provider = new GoogleAuthProvider();
 
@@ -21,11 +22,12 @@ const Navbar = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [avatar, setAvatar] = useState(null);
-  const { user } = useUser();
+  const { user, setUser } = useUser();
 
   const handleLogin = async () => {
     try {
-      await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(auth, provider);
+      setUser(result.user);
       setIsOpen(false);
     } catch (error) {
       console.error("Login error:", error);
@@ -65,6 +67,7 @@ const Navbar = () => {
   const handleLogout = async () => {
     try {
       await signOut(auth);
+      setUser(null);
     } catch (error) {
       console.error("Logout error:", error);
     }
@@ -102,17 +105,22 @@ const Navbar = () => {
         )}
       </div>
 
-      {isOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70">
-          <div className="bg-gray-900 p-6 rounded-lg shadow-lg w-96 text-white">
-            <h2 className="text-xl font-bold mb-4">
+      <Transition show={isOpen} as={Fragment}>
+        <Dialog
+          as="div"
+          className="fixed inset-0 z-50 flex items-center justify-center"
+          style={{ backgroundColor: "rgba(0,0,0,0.8)" }}
+          onClose={() => setIsOpen(false)}
+        >
+          <Dialog.Panel className="bg-gray-900 p-8 rounded-lg shadow-lg w-96 text-white">
+            <Dialog.Title className="text-xl font-bold mb-4 text-center">
               {isRegister ? "Реєстрація" : "Вхід"} в MetaQuest
-            </h2>
+            </Dialog.Title>
             <form onSubmit={handleEmailAuth} className="space-y-4">
               <input
                 type="email"
                 placeholder="Email"
-                className="w-full p-2 bg-gray-800 border border-gray-600 rounded text-white"
+                className="w-full p-3 bg-gray-800 border border-gray-600 rounded text-white"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -120,21 +128,29 @@ const Navbar = () => {
               <input
                 type="password"
                 placeholder="Пароль"
-                className="w-full p-2 bg-gray-800 border border-gray-600 rounded text-white"
+                className="w-full p-3 bg-gray-800 border border-gray-600 rounded text-white"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
+              {isRegister && (
+                <input
+                  type="file"
+                  className="w-full p-3 bg-gray-800 border border-gray-600 rounded text-white"
+                  onChange={(e) => setAvatar(e.target.files[0])}
+                  required
+                />
+              )}
               <button
                 type="submit"
-                className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition"
+                className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 rounded transition"
               >
                 {isRegister ? "Зареєструватись" : "Увійти"}
               </button>
             </form>
             <button
               onClick={handleLogin}
-              className="mt-4 w-full bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition"
+              className="mt-4 w-full bg-red-500 hover:bg-red-700 text-white font-bold py-3 rounded transition"
             >
               Увійти через Google
             </button>
@@ -143,7 +159,7 @@ const Navbar = () => {
               onClick={() => setIsRegister(!isRegister)}
             >
               {isRegister
-                ? "Вже зареєстровані? Увійти"
+                ? "Вже є акаунт? Увійти"
                 : "Немає акаунта? Зареєструватись"}
             </p>
             <button
@@ -152,9 +168,9 @@ const Navbar = () => {
             >
               Назад
             </button>
-          </div>
-        </div>
-      )}
+          </Dialog.Panel>
+        </Dialog>
+      </Transition>
     </div>
   );
 };
