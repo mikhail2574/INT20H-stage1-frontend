@@ -12,6 +12,7 @@
   "dependencies": {
     "@headlessui/react": "^2.2.0",
     "@tailwindcss/vite": "^4.0.4",
+    "antd": "^5.24.0",
     "firebase": "^11.3.0",
     "lucide-react": "^0.475.0",
     "react": "^19.0.0",

@@ -21,7 +21,6 @@ const CustomSelect = () => {
         cursor: 'pointer',
         marginTop: '2.5px'
       }}>
-        {/* Выбранное значение с стрелочкой */}
         <div 
           onClick={() => setIsOpen(!isOpen)} 
           style={{
@@ -34,7 +33,6 @@ const CustomSelect = () => {
           }}
         >
           {selected}
-          {/* Стрелочка */}
           <span style={{
             position: 'absolute',
             right: '10px',
@@ -43,7 +41,6 @@ const CustomSelect = () => {
           }}>▼</span>
         </div>
   
-        {/* Выпадающий список */}
         {isOpen && (
           <ul style={{
             position: 'absolute',
@@ -56,7 +53,7 @@ const CustomSelect = () => {
             margin: 0,
             borderRadius: '5px',
             border: '1px solid #B2ABB1',
-            overflow: 'hidden'  // Обрезаем лишнее
+            overflow: 'hidden'
           }}>
             {["За популярністю", "За рейтингом"].map((text, index, arr) => (
               <li 
@@ -65,7 +62,7 @@ const CustomSelect = () => {
                 style={{ 
                   width: '100%',
                   textAlign: 'center',
-                  lineHeight: '30px', // Вместо padding
+                  lineHeight: '30px',
                   cursor: 'pointer',
                   transition: 'background 0.3s',
                   borderRadius: index === 0 ? "5px 5px 0 0" : index === arr.length - 1 ? "0 0 5px 5px" : "0"

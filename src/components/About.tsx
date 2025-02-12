@@ -6,7 +6,7 @@ const About = () => {
             <div className="flex flex-row items-start gap-35 w-full top-[200px] absolute">
                 <div className="w-1/2">
                 <p className="text-white lg:text-[46px] sm:text-[40px] xs:text-[36px] text-[30px] lg:leading-[46px]" style={{paddingLeft:'60px'}}>
-                    <text>MetaQuest</text> - онлайн платформа, де саме ТИ можеш створювати та проходити квести як онлайн, так і наживо
+                    <text id="text">MetaQuest</text> - онлайн платформа, де саме ТИ можеш створювати та проходити квести як онлайн, так і наживо
                 </p>
                 </div>
                 <div>
