@@ -7,12 +7,13 @@ import {
   createUserWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
-import { auth, storage } from "../lib/firebase";
+import { auth, db, storage } from "../lib/firebase";
 import { useUser } from "../context/UserContext";
 import logo from "../assets/logo.png";
 import userIcon from "../assets/user_icon.png";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { Dialog, Transition } from "@headlessui/react";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 const provider = new GoogleAuthProvider();
 
@@ -28,9 +29,25 @@ const Navbar = () => {
     try {
       const result = await signInWithPopup(auth, provider);
       setUser(result.user);
+      await saveUserToFirestore(result.user);
       setIsOpen(false);
     } catch (error) {
       console.error("Login error:", error);
+    }
+  };
+
+  const saveUserToFirestore = async (user: any) => {
+    if (!user) return;
+    const userRef = doc(db, "users", user.uid);
+    const userSnap = await getDoc(userRef);
+
+    if (!userSnap.exists()) {
+      await setDoc(userRef, {
+        displayName: user.displayName || "Анонім",
+        email: user.email,
+        photoURL: user.photoURL || "/default-avatar.png",
+        createdAt: new Date(),
+      });
     }
   };
 
@@ -44,12 +61,22 @@ const Navbar = () => {
           email,
           password
         );
+        let avatarUrl = "/default-avatar.png";
+
         if (avatar) {
           const avatarRef = ref(storage, `avatars/${userCredential.user.uid}`);
           await uploadBytes(avatarRef, avatar);
-          const avatarUrl = await getDownloadURL(avatarRef);
+          avatarUrl = await getDownloadURL(avatarRef);
           await updateProfile(userCredential.user, { photoURL: avatarUrl });
         }
+
+        await updateProfile(userCredential.user, {
+          displayName: email.split("@")[0],
+        });
+        await saveUserToFirestore({
+          ...userCredential.user,
+          photoURL: avatarUrl,
+        });
       } else {
         userCredential = await signInWithEmailAndPassword(
           auth,
@@ -57,6 +84,7 @@ const Navbar = () => {
           password
         );
       }
+
       setUser(userCredential.user);
       setIsOpen(false);
     } catch (error) {

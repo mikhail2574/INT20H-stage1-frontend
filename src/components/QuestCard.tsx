@@ -1,26 +1,27 @@
 import React, { useState } from "react";
+import { GrTask } from "react-icons/gr";
+import { MdOutlineWatchLater } from "react-icons/md";
 
 interface QuestCardProps {
-  image?: string;
+  imageAuthor?: string;
   title?: string;
   rating?: number;
   imageUrl?: string;
   tasks?: number;
-  duration?: number;
+  duration?: string;
   players?: number;
-  author?: string;
+  authorName?: string;
   authorAvatar?: string;
 }
 
 const QuestCard: React.FC<QuestCardProps> = ({
-  image,
   title,
   rating,
   imageUrl,
-  tasks,
+  tasks = 1,
   duration,
   players,
-  author,
+  authorName,
   authorAvatar,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -77,7 +78,7 @@ const QuestCard: React.FC<QuestCardProps> = ({
       )}
 
       <img
-        src={image}
+        src={imageUrl}
         alt={title}
         className={`${
           isHovered
@@ -124,18 +125,13 @@ const QuestCard: React.FC<QuestCardProps> = ({
           </span>
         </div>
       </div>
-
-      <div
-        className={`${
-          isHovered
-            ? "text-[#CFCFE3] text-lg mt-3 flex items-center transition duration-300 opacity-30"
-            : "text-[#CFCFE3] text-lg mt-3 flex items-center transition duration-300 opacity-100"
-        }`}
-        style={{ marginLeft: "6px", marginTop: "2px" }}
-      >
-        <img src={imageUrl} className="w-6 h-6 mr-2" />
-        <span>
-          {tasks} · {duration} хвилин
+      <div style={{ display: "flex", flexDirection: "column", paddingLeft: 6 }}>
+        <span style={{ display: "flex", gap: 4, alignItems: "center" }}>
+          <GrTask />
+          {tasks}
+        </span>
+        <span style={{ display: "flex", gap: 4, alignItems: "center" }}>
+          <MdOutlineWatchLater /> {duration} хвилин
         </span>
       </div>
 
@@ -147,7 +143,7 @@ const QuestCard: React.FC<QuestCardProps> = ({
         }`}
         style={{ marginLeft: "6px", marginTop: "2px" }}
       >
-        <p>{players} пройшли тест</p>
+        {players ? <p>{players} пройшли тест</p> : <p>Станьте першими!</p>}
       </div>
 
       <div
@@ -159,11 +155,11 @@ const QuestCard: React.FC<QuestCardProps> = ({
       >
         <img
           src={authorAvatar}
-          alt={author}
+          alt={authorName}
           className="w-8 h-8 rounded-full mr-3"
           style={{ marginLeft: "6px", marginTop: "2px" }}
         />
-        <span className="text-lg">{author}</span>
+        <span className="text-lg">{authorName}</span>
       </div>
     </div>
   );

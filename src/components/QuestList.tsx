@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import QuestCard from "./QuestCard";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { db } from "../lib/firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 
 const ITEMS_PER_PAGE = 16;
 
@@ -35,7 +35,33 @@ const QuestList: React.FC = () => {
           id: doc.id,
           ...doc.data(),
         })) as Quest[];
-        setQuests(questsData);
+
+        // Load authors
+        const questsWithAuthors = await Promise.all(
+          questsData.map(async (quest) => {
+            if (quest.createdBy) {
+              const userRef = doc(db, "users", quest.createdBy);
+              const userSnap = await getDoc(userRef);
+
+              if (userSnap.exists()) {
+                const userData = userSnap.data();
+                console.log("USER INFO", userData);
+                return {
+                  ...quest,
+                  authorName: userData.displayName || "Анонім",
+                  authorAvatar: userData.photoURL || "/default-avatar.png",
+                };
+              }
+            }
+            return {
+              ...quest,
+              authorName: "Анонім",
+              authorAvatar: "/default-avatar.png",
+            };
+          })
+        );
+
+        setQuests(questsWithAuthors);
       } catch (error) {
         console.error("Помилка завантаження квестів:", error);
       } finally {
