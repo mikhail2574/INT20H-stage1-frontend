@@ -1,50 +1,73 @@
-# React + TypeScript + Vite
+MetaQuest — це онлайн-платформа, яка дозволяє користувачам створювати та проходити квести як онлайн, так і офлайн.
+Платформа інтегрована з Firebase, має авторизацію, систему завдань та інтерфейс на React + TailwindCSS.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+📌 Основні технології
+Frontend: React, TypeScript, TailwindCSS, Headless UI
+Backend: Firebase Firestore (база даних), Firebase Storage (зображення)
+Аутентифікація: Firebase Auth (Google, Email/Пароль)
+Деплой: GitHub Actions + FTP
 
-Currently, two official plugins are available:
+Функціонал
+🔹 1. Аутентифікація користувачів
+✅ Реєстрація та вхід через Google
+✅ Реєстрація та вхід через Email/Пароль
+✅ Завантаження аватарки при реєстрації
+✅ Збереження профілю користувача у Firebase Firestore
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+📄 Файл: src/context/UserContext.tsx
+📄 Файл: src/components/Navbar.tsx
 
-## Expanding the ESLint configuration
+🔹 2. Створення та проходження квестів
+✅ Створення квесту через модальне вікно
+✅ Додавання опису, часу проходження, типу завдання, зображення
+✅ Завантаження квестів у Firebase Firestore
+✅ Збереження автора квесту (імені та аватарки)
+✅ Відображення списку квестів у QuestList
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+📄 Файл: src/components/QuestCreationModal.tsx
+📄 Файл: src/components/QuestList.tsx
 
-- Configure the top-level `parserOptions` property like this:
+3.  Відображення списку квестів
+    ✅ Динамічне завантаження квестів з Firestore
+    ✅ Відображення автора квесту (аватар + ім'я)
+    ✅ Пагінація квестів (16 на сторінці)
+    ✅ Відображення стану "Завантаження..." або "Немає квестів"
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+📄 Файл: src/components/QuestList.tsx
+📄 Файл: src/components/QuestCard.tsx
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+🔹 4. Навігація та UI
+✅ Головна сторінка з кнопками "Створити свій квест!" і "Перейти до існуючих"
+✅ Використання Headless UI для модальних вікон
+✅ Темна тема (TailwindCSS)
+✅ Динамічні кнопки з анімацією Gradient Animation
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+📄 Файл: src/components/About.tsx
+📄 Файл: src/components/Navbar.tsx
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+📁 Структура проєкту
+📦 src
+┣ 📂 assets # Зображення та статичні файли
+┣ 📂 components # Компоненти React (Navbar, QuestList, QuestCard)
+┣ 📂 context # Контекст аутентифікації (UserContext)
+┣ 📂 lib # Firebase конфігурація
+┣ 📂 pages # Основні сторінки (Main Page, Profile)
+┣ 📂 styles # Глобальні стилі (TailwindCSS)
+┗ 📜 App.tsx # Головний файл React
+
+🔥 Як запустити проєкт?
+1️⃣ Встановлення залежностей
+npm install
+
+2️⃣ Запуск проєкту
+npm run dev
+
+🌍 Перемінні середовища
+Створіть файл .env у корені проєкту та додайте свої Firebase API ключі:
+
+VITE_FIREBASE_API_KEY=your_api_key
+VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
+VITE_FIREBASE_PROJECT_ID=your_project_id
+VITE_FIREBASE_STORAGE_BUCKET=your_storage_bucket
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+VITE_FIREBASE_APP_ID=your_app_id
